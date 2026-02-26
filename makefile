@@ -1,17 +1,17 @@
 ASM = nasm
 ASMFLAGS = -f elf64
 LD = ld
-TARGET = ./hello
-SOURCE = ./hello.asm
-OBJECT = ./hello.o
+TARGET = ./compile/main
+SOURCE = ./src/*.asm
+OBJECT = $(patsubst ./src/%.asm, ./build/%.o, $(SOURCE))
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECT)
 	$(LD) $(OBJECT) -o $(TARGET)
 
-$(OBJECT): $(SOURCE)
-	$(ASM) $(ASMFLAGS) $(SOURCE) -o $(OBJECT)
+./build/%.o: ./src/%.asm
+	$(ASM) $(ASMFLAGS) $< -o $@
 
 clean:
 	rm -f $(OBJECT) $(TARGET)
